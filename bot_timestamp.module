@@ -1,0 +1,36 @@
+<?php
+// $Id$
+
+/**
+ * @file
+ * Convert a timetamp, or a date into a date, or timestamp, respectively.
+ */
+
+/**
+ * Implementation of hook_help().
+ */
+function bot_timestamp_help($path, $args) {
+  switch ($path) {
+    case 'irc:features':
+      return array(t('Timestamp'));
+    case 'irc:features#timestamp':
+      return t('Format a timestamp into a date, or a date into a timestamp.');
+  }
+}
+
+function bot_timestamp_irc_msg_channel($data, $from_query = FALSE) {
+  $to = $from_query ? $data->nick : $data->channel;
+  $addressed = bot_name_regexp();
+  
+  // We are getting a date that we turn into a timestamp.
+  if (preg_match("/^timestamp (.*)/i", trim($data->message), $matches)) {
+    $date = $matches[1];
+    $output = strtotime($date);
+  }
+  // We are getting a timestamp that we need to turn into a date.
+  if (preg_match("/^date (.*)/i", trim($data->message), $matches)) {
+    $timestamp = $matches[1];
+    $output = format_date((int)$timestamp, 'large');
+  }
+  bot_message($to, $output);
+}
