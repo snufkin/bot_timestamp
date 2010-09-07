@@ -1,0 +1,6 @@
+; $Id$
+name = Bot Timestamp
+package = Bot
+description = "Create a time from a timestamp and vice-versa."
+dependencies[] = bot
+core = 6.x
