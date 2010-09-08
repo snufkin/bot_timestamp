@@ -26,11 +26,12 @@ function bot_timestamp_irc_msg_channel($data, $from_query = FALSE) {
   if (preg_match("/^timestamp (.*)/i", trim($data->message), $matches)) {
     $date = $matches[1];
     $output = strtotime($date);
+    bot_message($to, $output);
   }
   // We are getting a timestamp that we need to turn into a date.
   if (preg_match("/^date (.*)/i", trim($data->message), $matches)) {
     $timestamp = $matches[1];
     $output = format_date((int)$timestamp, 'large');
+    bot_message($to, $output);
   }
-  bot_message($to, $output);
 }
